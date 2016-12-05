@@ -4,7 +4,7 @@ from astropy.table import Table
 
 from bokeh.io import curdoc
 from bokeh.layouts import row, column
-from bokeh.models import ColumnDataSource, DataRange1d, Select, Button
+from bokeh.models import ColumnDataSource, DataRange1d, Range1d, Select, Button, CustomJS, DataTable, TableColumn
 from bokeh.plotting import figure
 
 def get_dataset(filename):
@@ -83,8 +83,15 @@ nexttarg.on_click(next_target)
 source = get_dataset(targets[target])
 plot = make_plot(source, "PTF light curve for " + target)
 
+#Initialize table
+datacolumns = []
+fields = ['obsmjd','mag_autocorr','magerr_auto']
+for field in fields:
+    datacolumns.append(TableColumn(field=field,title=field))
+data_table = DataTable(source=source, columns=datacolumns, width=800)
+
 #Set up layout
 controls = column(target_select,prevtarg,nexttarg)
 
-curdoc().add_root(column(controls, plot))
+curdoc().add_root(column(controls, plot, data_table))
 curdoc().title = "PTF Viewer"

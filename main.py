@@ -4,7 +4,7 @@ from astropy.table import Table
 
 from bokeh.io import curdoc
 from bokeh.layouts import row, column
-from bokeh.models import ColumnDataSource, DataRange1d, Select
+from bokeh.models import ColumnDataSource, DataRange1d, Select, Button
 from bokeh.plotting import figure
 
 def get_dataset(filename):
@@ -38,7 +38,20 @@ def update_plot(attrname, old, new):
     plot.title.text = "PTF light curve for " + target
     src = get_dataset(targets[target])
     source.data.update(src.data)
-    
+
+def prev_target():
+    targlist = target_select.options
+    currentind = targlist.index(target_select.value)
+    if currentind > 0:
+        target_select.value = targlist[currentind-1]
+        
+def next_target():
+    targlist = target_select.options
+    numtargs = len(targlist)
+    currentind = targlist.index(target_select.value)
+    if currentind < numtargs -1:
+        target_select.value = targlist[currentind+1]
+
 #Check that data dirctory was supplied
 datadir = './data/'
 if len(sys.argv) > 1:
@@ -46,22 +59,32 @@ if len(sys.argv) > 1:
 if datadir[-1] != '/':
     datadir += '/'
 
-fnames = glob(datadir+'*.xml')
+    
+#Set up interaction for selecting data source
 
+#Dict mapping target names to filenames
+fnames = glob(datadir+'*.xml')
 targets = {}
 for fname in fnames:
     targets[fname.split('/')[-1][:-4]] = fname
-
 target = targets.keys()[0]
 
+#Dropdown to select target
 target_select = Select(value=target, title='Target', options=sorted(targets.keys()))
+target_select.on_change('value', update_plot)
 
+#Buttons to change target
+prevtarg = Button(label='Previous')
+prevtarg.on_click(prev_target)
+nexttarg = Button(label='Next')
+nexttarg.on_click(next_target)
+
+#Initialize data source and plot
 source = get_dataset(targets[target])
 plot = make_plot(source, "PTF light curve for " + target)
 
-target_select.on_change('value', update_plot)
-
-controls = column(target_select)
+#Set up layout
+controls = column(target_select,prevtarg,nexttarg)
 
 curdoc().add_root(column(controls, plot))
-curdoc().title = "PTF Light Curve Exploration App"
+curdoc().title = "PTF Viewer"

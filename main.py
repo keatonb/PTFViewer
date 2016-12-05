@@ -16,12 +16,10 @@ def get_dataset(filename):
 def make_plot(source, title):
     plot = figure(plot_width=800, tools="pan,wheel_zoom,lasso_select,tap,save,box_zoom,reset", 
                   toolbar_location="above",active_drag="box_zoom",active_tap="tap",active_scroll="wheel_zoom")
-    plot.title.text = title
     
     
     plot.segment(x0='obsmjd',y0='lower',x1='obsmjd',y1='upper',source=source,color="black")
-    plot.circle(x='obsmjd',y='mag_autocorr',source=source,size=10, color="red", alpha=1)
-    
+    plot.circle(x='obsmjd',y='mag_autocorr',source=source,size=10, color="red", alpha=1)  
 
     # fixed attributes
     plot.xaxis.axis_label = "MJD"
@@ -38,6 +36,16 @@ def update_plot(attrname, old, new):
     plot.title.text = "PTF light curve for " + target
     src = get_dataset(targets[target])
     source.data.update(src.data)
+    xstart=min(source.data["obsmjd"])
+    xend=max(source.data["obsmjd"])
+    xpad = 0.1*(xend-xstart)/2.
+    plot.x_range.start=xstart-xpad
+    plot.x_range.end=xend+xpad
+    ystart=max(source.data["upper"])
+    yend=min(source.data["lower"])
+    ypad = 0.1*(ystart-yend)/2.
+    plot.y_range.start=ystart+ypad
+    plot.y_range.end=yend-ypad
 
 def prev_target():
     targlist = target_select.options

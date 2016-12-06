@@ -5,6 +5,7 @@ from astroquery.irsa import Irsa
 from astropy.coordinates import SkyCoord
 from astropy.table import Table
 import astropy.units as u
+from pandas import DataFrame
 
 from bokeh.io import curdoc
 from bokeh.layouts import row, column, widgetbox
@@ -26,13 +27,17 @@ if datadir[-1] != '/':
 
 #Read in data from file
 def get_dataset(filename):
-    df = Table.read(filename)['obsmjd','mag_autocorr','magerr_auto'].to_pandas().copy()
-    df['upper'] = df['mag_autocorr']+df['magerr_auto']
-    df['lower'] = df['mag_autocorr']-df['magerr_auto']
+    df = DataFrame({'obsmjd':[np.nan],'mag_autocorr':[np.nan],'magerr_auto':[np.nan],'upper':[np.nan],'lower':[np.nan]})
+    if dataavailable:
+        df = Table.read(filename)['obsmjd','mag_autocorr','magerr_auto'].to_pandas().copy()
+        df['upper'] = df['mag_autocorr']+df['magerr_auto']
+        df['lower'] = df['mag_autocorr']-df['magerr_auto']
     return ColumnDataSource(data=df)
 
 #Make initial plot object
 def make_plot(source, title):
+    if not dataavailable:
+        title='download data to display'
     plot = figure(plot_width=800, tools="pan,wheel_zoom,lasso_select,tap,save,box_zoom,reset", 
                   toolbar_location="above",active_drag="box_zoom",active_tap="tap",active_scroll="wheel_zoom",
                   title=title)
@@ -43,7 +48,7 @@ def make_plot(source, title):
 
     # fixed attributes
     plot.xaxis.axis_label = "MJD"
-    plot.yaxis.axis_label = "mag"
+    plot.yaxis.axis_label = "magnitude"
     plot.axis.axis_label_text_font_style = "bold"
     plot.x_range = DataRange1d(range_padding=0.1)
     plot.y_range = DataRange1d(range_padding=0.1,flipped=True)
@@ -127,6 +132,7 @@ def download_ptf(coords,name=None,directory=datadir):
     name -- string for filename (default None)
     directory -- location to save data (default datadir)
     """
+    global dataavailable
     #Download the PTF data
     table = Irsa.query_region(coordinates=coords,catalog='ptf_lightcurves',radius=5*u.arcsec)
     nearest = np.where(table['dist'] == np.min(table['dist']))
@@ -134,11 +140,20 @@ def download_ptf(coords,name=None,directory=datadir):
         name = str(table["oid"][0])
     fname = datadir+name+'.xml'
     table[nearest].write(fname, format='votable', overwrite=True)
-    #add to target menu and display
-    targets[name] = fname
-    target_select.options.append(name)
-    target_select.value = target_select.options[-1]
     
+    #add to target menu and display
+    if dataavailable == False:
+        dataavailable = True
+        _ = targets.pop(' ')
+        targets[name] = fname
+        _ = target_select.options.pop(0)
+        target_select.options.append(name)
+        target_select.value = target_select.options[-1]
+    else:
+        targets[name] = fname
+        target_select.options.append(name)
+        target_select.value = target_select.options[-1]
+        
     
 
     
@@ -146,13 +161,13 @@ def download_ptf(coords,name=None,directory=datadir):
 
 #Dict mapping target names to filenames
 fnames = glob(datadir+'*.xml')
-targets = {}
-for fname in fnames:
-    targets[fname.split('/')[-1][:-4]] = fname
-target = targets.keys()[0]
 
-#Dropdown to select target
-target_select = Select(value=target, title='Target to display:', options=sorted(targets.keys()),width=220)
+
+#Initialize target dropdown as if data is not available
+dataavailable = False
+target = ' '
+targets = {target:None}
+target_select = Select(value=target, title='Target to display:', options=[' '],width=220)
 target_select.on_change('value', update_plot)
 
 #Buttons to change target
@@ -184,6 +199,16 @@ search_button.on_click(search)
 #Initialize data source and plot
 source = get_dataset(targets[target])
 plot = make_plot(source, title="PTF light curve for " + target)
+
+#setup available data
+if len(fnames) > 0:
+    dataavailable=True
+    targets = {}
+    for fname in fnames:
+        targets[fname.split('/')[-1][:-4]] = fname
+    target = targets.keys()[0]
+    target_select.options = sorted(targets.keys())   
+    target_select.value = target
 
 #Initialize table
 datacolumns = []

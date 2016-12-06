@@ -1,3 +1,4 @@
+import os
 from glob import glob
 import numpy as np
 import sys
@@ -21,7 +22,10 @@ if len(sys.argv) > 1:
     datadir = sys.argv[1]
 if datadir[-1] != '/':
     datadir += '/'
-
+if not os.path.exists(datadir):
+    datadir = './data/'
+    if not os.path.exists(datadir):
+        os.makedirs(datadir)
 
 #Define many needed functions
 

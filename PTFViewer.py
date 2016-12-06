@@ -9,21 +9,19 @@ import astropy.units as u
 from pandas import DataFrame
 
 from bokeh.io import curdoc
-from bokeh.layouts import row, column, widgetbox
+from bokeh.layouts import row, column
 from bokeh.models import ColumnDataSource, DataRange1d, Select, Button, DataTable, TableColumn, TextInput, Div, VBox, RadioButtonGroup
 from bokeh.plotting import figure
 
-
-
 #Before everything, check if data directory was supplied
 #Check that data dirctory was supplied
-datadir = './data/'
+datadir = os.getcwd()+'/data/'
 if len(sys.argv) > 1:
     datadir = sys.argv[1]
 if datadir[-1] != '/':
     datadir += '/'
 if not os.path.exists(datadir):
-    datadir = './data/'
+    datadir = os.getcwd()+'/data/'
     if not os.path.exists(datadir):
         os.makedirs(datadir)
 
@@ -196,7 +194,7 @@ ra_box = VBox(ra_input,width=150,height=50)
 dec_input = TextInput(value="", title="Declination:",width=120)
 dec_box = VBox(dec_input,width=150,height=50)
 ra_format = RadioButtonGroup(labels=["hours","degrees"],active=0)
-search_button = Button(label='Search and Download Nearest Objects',width=300)
+search_button = Button(label='Search and Download Nearest Object',width=300)
 search_button.on_click(search)
 
 

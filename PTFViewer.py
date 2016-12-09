@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import print_function
 from glob import glob
 import numpy as np
 import sys
@@ -24,7 +26,7 @@ if datadir[-1] != '/':
     datadir += '/'
 if not os.path.exists(datadir):
     datadir = os.getcwd()+'/data/'
-    print('Created data directory at '+datadir)
+    print(('Created data directory at '+datadir))
     if not os.path.exists(datadir):
         os.makedirs(datadir)
 
@@ -164,7 +166,7 @@ if len(fnames) == 0:
     targets["SAMPLE DATA. Search for your target above."] = './sampledata.xml'
 for fname in fnames:
     targets[fname.split('/')[-1][:-4]] = fname
-target = targets.keys()[0]
+target = list(targets.keys())[0]
 
 #Dropdown to select target
 target_select = Select(value=target, title='Target to display:', options=sorted(targets.keys()),width=220)

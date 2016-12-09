@@ -1,4 +1,24 @@
 # PTFViewer
-Bokeh application for visualizing PTF light curves.
+Bokeh application for visualizing public light curve data from the [Palomar Transient Factory](http://www.ptf.caltech.edu/).
 
-Currently a work in progress.  This application displays interactive plots and linked table views of Palomar Transient Factory DR3 public light curves.
+Requires [astropy](http://www.astropy.org/), [astroquery](http://astroquery.readthedocs.io), and [Bokeh](http://bokeh.pydata.org/en/latest/).
+
+This software displays interactive plots and linked table views of Palomar Transient Factory (PTF) DR3 public light curve data through a locally served web app.
+
+Search a coordinate or target name for available PTF data. PTFViewer will download the light curve if available and plot it with error bars.
+
+The toolbar at the top of the plot window allows you to pan, zoom, select points or save a PNG copy of the current view.
+
+To launch the Bokeh server, run the command:
+```
+bokeh serve --show location/to/PTFViewer.py
+```
+
+This project is a work in progress. If there are specific improvements you would like to see, indicate them in the "Issues" on GitHub.
+
+If you find this software useful in your research and wish to acknowledge it in a publication, consider including "This work made use of the PTFViewer application written by Keaton J. Bell."
+
+---
+
+Note current issues:
+ - Attempts to determine the coordinate of a named target using the CDS name resolver frequently time out. Try again after a couple seconds.

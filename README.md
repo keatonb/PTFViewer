@@ -13,10 +13,13 @@ To launch the Bokeh server, run the command:
 ```
 bokeh serve --show location/to/PTFViewer.py
 ```
+Example data is included for the Type 1a supernova PTF10icb that was discovered in PTF data and announced by [Nugent, P., Sullivan, M., \& Howell, D. A. 2010, The Astronomer's Telegram, 2657](http://www.astronomerstelegram.org/?read=2657). These data are also shown in the example figure below.
+
+![Example data on PTF10icb](https://github.com/keatonb/PTFViewer/blob/master/sampleplot.png)
 
 This project is a work in progress. If there are specific improvements you would like to see, indicate them in the "Issues" on GitHub.
 
-If you find this software useful in your research and wish to acknowledge it in a publication, consider including "This work made use of the PTFViewer application written by Keaton J. Bell."
+If you find this software useful in your research and wish to acknowledge it in a publication, consider including "This work made use of the PTFViewer application written by Keaton J. Bell: https://github.com/keatonb/PTFViewer/."
 
 ---
 

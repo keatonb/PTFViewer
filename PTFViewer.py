@@ -83,6 +83,12 @@ def next_target():
     if currentind < numtargs -1:
         target_select.value = targlist[currentind+1]
 
+#Clear search fields
+def clearfields():
+    targ_input.value = ''
+    ra_input.value = ''
+    dec_input.value = ''
+
 #search for and download new PTF data
 def search():
     #See if target name was supplied
@@ -176,10 +182,11 @@ ra_input = TextInput(value="", title="Right Ascension:",width=120)
 ra_box = VBox(ra_input,width=150,height=50)
 dec_input = TextInput(value="", title="Declination:",width=120)
 dec_box = VBox(dec_input,width=150,height=50)
-ra_format = RadioButtonGroup(labels=["hours","degrees"],active=0)
-search_button = Button(label='Search and Download Nearest Objects',width=300)
+ra_format = RadioButtonGroup(labels=["hours","degrees"],active=0,width=220)
+clearbtn = Button(label='clear',width=80)
+clearbtn.on_click(clearfields)
+search_button = Button(label='Search and Download Nearest Object',width=300)
 search_button.on_click(search)
-
 
 #Initialize data source and plot
 source = get_dataset(targets[target])
@@ -195,7 +202,7 @@ data_table = DataTable(source=source, columns=datacolumns, width=800)
 #Set up layout
 datacontrols = column(target_select,row(prevtarg,nexttarg))
 coords_in = row(ra_box,dec_box,width=300)
-search_in = column(targ_input,coords_in,ra_format,search_button)
+search_in = column(targ_input,coords_in,row(ra_format,clearbtn),search_button)
 
 sep = Div(text="",width=100)
 header = row(div,sep,search_in)

@@ -1,6 +1,7 @@
 from glob import glob
 import numpy as np
 import sys
+import os
 from astroquery.irsa import Irsa
 from astropy.coordinates import SkyCoord
 from astropy.table import Table
@@ -14,12 +15,18 @@ from bokeh.plotting import figure
 
 
 #Before everything, check if data directory was supplied
-#Check that data dirctory was supplied
-datadir = './data/'
+#Check that data dirctory was supplied.
+#If it doesn't exist, create a data directory.
+datadir = os.getcwd()+'/data/'
 if len(sys.argv) > 1:
     datadir = sys.argv[1]
 if datadir[-1] != '/':
     datadir += '/'
+if not os.path.exists(datadir):
+    datadir = os.getcwd()+'/data/'
+    print('Created data directory at '+datadir)
+    if not os.path.exists(datadir):
+        os.makedirs(datadir)
 
 
 #Define many needed functions
@@ -153,6 +160,8 @@ def download_ptf(coords,name=None,directory=datadir):
 #Dict mapping target names to filenames
 fnames = glob(datadir+'*.xml')
 targets = {}
+if len(fnames) == 0:
+    targets["SAMPLE DATA. Search for your target above."] = './sampledata.xml'
 for fname in fnames:
     targets[fname.split('/')[-1][:-4]] = fname
 target = targets.keys()[0]

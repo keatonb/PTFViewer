@@ -7,7 +7,7 @@ This software displays interactive plots and linked table views of Palomar Trans
 
 Search a coordinate or target name for available PTF data. PTFViewer will download the light curve if available and plot it with error bars.
 
-The toolbar at the top of the plot window allows you to pan, zoom, select points or save a PNG copy of the current view.
+The toolbar at the top of the plot window allows you to pan, zoom, select points or save a PNG copy of the current view. The plot and full data table below it are linked, so any selection in one is highlighted in the other.
 
 To launch the Bokeh server, run the command:
 ```

@@ -37,6 +37,8 @@ if not os.path.exists(datadir):
 def get_dataset(filename):
     df = Table.read(filename).to_pandas().copy()
     cols = df.keys()
+    colors = {'1':'green','2':'red'}
+    df['color'] = [colors[c] for c in df['fid']]
     df['upper'] = df['mag_autocorr']+df['magerr_auto']
     df['lower'] = df['mag_autocorr']-df['magerr_auto']
     return ColumnDataSource(data=df),cols
@@ -47,13 +49,13 @@ def make_plot(source, title):
                   toolbar_location="above",active_drag="box_zoom",active_tap="tap",active_scroll="wheel_zoom",
                   title=title)
     
-    
     plot.segment(x0='obsmjd',y0='lower',x1='obsmjd',y1='upper',source=source,color="black")
-    plot.circle(x='obsmjd',y='mag_autocorr',source=source,size=10, color="red", alpha=1)  
+    plot.circle(x='obsmjd',y='mag_autocorr',source=source,size=10, 
+                color='color',alpha=1)  
 
     # fixed attributes
     plot.xaxis.axis_label = "MJD"
-    plot.yaxis.axis_label = "mag"
+    plot.yaxis.axis_label = "magnitude (green = g; red = R)"
     plot.axis.axis_label_text_font_style = "bold"
     plot.x_range = DataRange1d(range_padding=0.1)
     plot.y_range = DataRange1d(range_padding=0.1,flipped=True)

@@ -209,7 +209,8 @@ plot = make_plot(source, title="PTF light curve for " + target)
 datacolumns = []
 for field in cols:
     datacolumns.append(TableColumn(field=field,title=field,width=150))
-data_table = DataTable(source=source, columns=datacolumns, width=800, height=300, fit_columns=False)
+data_table = DataTable(source=source, columns=datacolumns, width=800, height=300, 
+                       fit_columns=False, selectable=True)
 
 #Set up layout
 datacontrols = column(target_select,row(prevtarg,nexttarg))

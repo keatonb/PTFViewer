@@ -35,10 +35,11 @@ if not os.path.exists(datadir):
 
 #Read in data from file
 def get_dataset(filename):
-    df = Table.read(filename)['obsmjd','mag_autocorr','magerr_auto'].to_pandas().copy()
+    df = Table.read(filename).to_pandas().copy()
+    cols = df.keys()
     df['upper'] = df['mag_autocorr']+df['magerr_auto']
     df['lower'] = df['mag_autocorr']-df['magerr_auto']
-    return ColumnDataSource(data=df)
+    return ColumnDataSource(data=df),cols
 
 #Make initial plot object
 def make_plot(source, title):
@@ -64,7 +65,7 @@ def make_plot(source, title):
 def update_plot(attrname, old, new):
     target = target_select.value
     plot.title.text = "PTF light curve for " + target
-    src = get_dataset(targets[target])
+    src,_ = get_dataset(targets[target])
     source.data.update(src.data)
     xstart=min(source.data["obsmjd"])
     xend=max(source.data["obsmjd"])
@@ -144,6 +145,7 @@ def download_ptf(coords,name=None,directory=datadir):
     """
     #Download the PTF data
     table = Irsa.query_region(coordinates=coords,catalog='ptf_lightcurves',radius=5*u.arcsec)
+    table = table.filled(-99)
     nearest = np.where(table['dist'] == np.min(table['dist']))
     if name is None:
         name = str(table["oid"][0])
@@ -200,15 +202,14 @@ search_button = Button(label='Search and Download Nearest Object',width=300)
 search_button.on_click(search)
 
 #Initialize data source and plot
-source = get_dataset(targets[target])
+source,cols = get_dataset(targets[target])
 plot = make_plot(source, title="PTF light curve for " + target)
 
 #Initialize table
 datacolumns = []
-fields = ['obsmjd','mag_autocorr','magerr_auto']
-for field in fields:
-    datacolumns.append(TableColumn(field=field,title=field))
-data_table = DataTable(source=source, columns=datacolumns, width=800)
+for field in cols:
+    datacolumns.append(TableColumn(field=field,title=field,width=150))
+data_table = DataTable(source=source, columns=datacolumns, width=800, height=300, fit_columns=False)
 
 #Set up layout
 datacontrols = column(target_select,row(prevtarg,nexttarg))

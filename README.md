@@ -1,7 +1,7 @@
 # PTFViewer
-Bokeh application for visualizing public light curve data from the [Palomar Transient Factory](http://www.ptf.caltech.edu/).
+PTFViewer is a Bokeh application for visualizing public light curve data from the [Palomar Transient Factory](http://www.ptf.caltech.edu/) written in Python.
 
-Requires [astropy](http://www.astropy.org/), [astroquery](http://astroquery.readthedocs.io), and [Bokeh](http://bokeh.pydata.org/en/latest/).
+It requires [astropy](http://www.astropy.org/), [astroquery](http://astroquery.readthedocs.io), and [Bokeh](http://bokeh.pydata.org/en/latest/).
 
 This software displays interactive plots and linked table views of Palomar Transient Factory (PTF) DR3 public light curve data through a locally served web app.
 

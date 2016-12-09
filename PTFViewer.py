@@ -130,18 +130,18 @@ def search():
         dec_input.value = dec
     if coords is not None:
         if hasName:
-            download_ptf(coords,targ_input.value.strip())
+            download_ptf(coords,targ_input.value.strip(),directory=datadir)
         else:
-            download_ptf(coords)
+            download_ptf(coords,directory=datadir)
 
 #Download PTF data and add to list
-def download_ptf(coords,name=None,directory=datadir):
+def download_ptf(coords,name=None,directory='./'):
     """Download PTF light curve data.
 
     Keyword arguments:
     coords -- astropy.coordinates.SkyCoord object
-    name -- string for filename (default None)
-    directory -- location to save data (default datadir)
+    name -- string for filename (default None, i.e. PTF oid)
+    directory -- location to save data (default './')
     """
     #Download the PTF data
     table = Irsa.query_region(coordinates=coords,catalog='ptf_lightcurves',radius=5*u.arcsec)

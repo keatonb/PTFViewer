@@ -5,7 +5,7 @@ It requires [astropy](http://www.astropy.org/), [astroquery](http://astroquery.r
 
 This software displays interactive plots and linked table views of Palomar Transient Factory (PTF) DR3 public light curve data through a locally served web app.
 
-Search a coordinate or target name for available PTF data. PTFViewer will download the light curve if available and plot it with error bars.
+Search a coordinate or target name for available PTF data. PTFViewer will download the light curve if available and plot it with error bars. The full data table is displayed below the plot.
 
 The toolbar at the top of the plot window allows you to pan, zoom, select points or save a PNG copy of the current view. The plot and full data table below it are linked, so any selection in one is highlighted in the other.
 

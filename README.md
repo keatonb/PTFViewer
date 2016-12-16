@@ -22,9 +22,17 @@ This project is a work in progress. If there are specific improvements you would
 If you find this software useful in your research and wish to acknowledge it in a publication, consider including "This work made use of the PTFViewer application written by Keaton J. Bell: https://github.com/keatonb/PTFViewer/."
 
 ---
-**To inspect many objects**: you may wish to `import PTFViewer.download_ptf` to your own script that runs through your target list coordinates. To use PTFViewer to display the xml data downloaded to a directory other than the app default, use:
+**To inspect many objects**: I provide for your convenience a script to download data from a list of pointing: multidownload.py
 ```
-bokeh serve --show path/to/PTFViewer.py --args /path/to/xml/data/
+python multidownload input_file.csv [/data/directory/]
+```
+where the lines of input_file.csv contain `targetname,rad,decd` with RA and Dec in decimal degrees, and the directory is optional.  
+
+Warning: this downloads the light curve data for the PTF source nearest the provided coordinates, not necessarily the data you intended.
+
+To use PTFViewer to display the xml data downloaded to a directory other than the app default, use:
+```
+bokeh serve --show path/to/PTFViewer.py --args /data/directory/
 ```
 ---
 Note current issues:

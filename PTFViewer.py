@@ -4,7 +4,8 @@ PTFViewer is a Bokeh application for visualizing public light curve data from th
 Learn more about it at https://github.com/keatonb/PTFViewer
 
 @author: keatonb
-"""from __future__ import absolute_import
+"""
+from __future__ import absolute_import
 from __future__ import print_function
 from glob import glob
 import numpy as np

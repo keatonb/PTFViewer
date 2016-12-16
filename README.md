@@ -22,7 +22,7 @@ This project is a work in progress. If there are specific improvements you would
 If you find this software useful in your research and wish to acknowledge it in a publication, consider including "This work made use of the PTFViewer application written by Keaton J. Bell: https://github.com/keatonb/PTFViewer/."
 
 ---
-**To inspect many objects**: I provide for your convenience a script to download data from a list of pointing: multidownload.py
+**To inspect many objects**: For your convenience, I include a script to download data from a list of pointings: multidownload.py
 ```
 python multidownload input_file.csv [/data/directory/]
 ```

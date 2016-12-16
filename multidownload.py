@@ -7,6 +7,9 @@ input csv file should have format:
 targetname,rad,decd
 where rad and decd are the RA and Dec in decimal degrees.
 
+WARNING: Downloads data for nearest PTF source to given coordinates, not 
+necessarily for the target you want.
+
 Learn more at https://github.com/keatonb/PTFViewer
 
 @author: keatonb

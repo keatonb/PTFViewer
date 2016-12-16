@@ -10,7 +10,7 @@ where rad and decd are the RA and Dec in decimal degrees.
 WARNING: Downloads data for nearest PTF source to given coordinates, not 
 necessarily for the target you want.
 
-Learn more at https://github.com/keatonb/PTFViewer
+Learn more at https://github.com/keatonb/PTFViewer/
 
 @author: keatonb
 """
@@ -24,7 +24,7 @@ from PTFViewer import download_ptf
 nargs = len(sys.argv)
 
 if nargs < 2:
-    print('usage: python multidownload input_file.csv [/data/directory]')
+    print('usage: python multidownload.py input_file.csv [/data/directory]')
     sys.exit()
     
 datadir = os.getcwd()+'/data/'

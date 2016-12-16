@@ -24,7 +24,7 @@ from PTFViewer import download_ptf
 nargs = len(sys.argv)
 
 if nargs < 2:
-    print('usage: python PTF_downloadlist input_file.csv [/data/directory]')
+    print('usage: python multidownload input_file.csv [/data/directory]')
     sys.exit()
     
 datadir = os.getcwd()+'/data/'

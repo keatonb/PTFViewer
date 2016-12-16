@@ -24,7 +24,7 @@ If you find this software useful in your research and wish to acknowledge it in 
 ---
 **To inspect many objects**: For your convenience, I include a script to download data from a list of pointings: multidownload.py
 ```
-python multidownload input_file.csv [/data/directory/]
+python multidownload.py input_file.csv [/data/directory/]
 ```
 where the lines of input_file.csv contain `targetname,rad,decd` with RA and Dec in decimal degrees, and the directory is optional.  
 

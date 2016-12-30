@@ -144,7 +144,7 @@ def search():
             download_ptf(coords,directory=datadir)
 
 #Download PTF data and add to list
-def download_ptf(coords,name=None,directory='./'):
+def download_ptf(coords,name=None,directory=None):
     """Download PTF light curve data.
 
     Keyword arguments:
@@ -153,13 +153,17 @@ def download_ptf(coords,name=None,directory='./'):
     directory -- location to save data (default './')
     """
     #Download the PTF data
+    if directory is None:
+        directory = datadir
     table = Irsa.query_region(coordinates=coords,catalog='ptf_lightcurves',radius=5*u.arcsec)
     table = table.filled(-99)
     nearest = np.where(table['dist'] == np.min(table['dist']))
     if name is None:
         name = str(table["oid"][0])
-    fname = datadir+name+'.xml'
+    
+    fname = directory+name+'.xml'
     table[nearest].write(fname, format='votable', overwrite=True)
+    print("Data saved to "+fname)
     #add to target menu and display
     targets[name] = fname
     target_select.options.append(name)

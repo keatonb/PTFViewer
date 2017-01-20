@@ -157,13 +157,20 @@ def download_ptf(coords,name=None,directory=None):
         directory = datadir
     table = Irsa.query_region(coordinates=coords,catalog='ptf_lightcurves',radius=5*u.arcsec)
     table = table.filled(-99)
+    #Don't only use the nearest!
     nearest = np.where(table['dist'] == np.min(table['dist']))
     if name is None:
         name = str(table["oid"][0])
-    
+        
+    nearestcoords = SkyCoord(table["ra"][nearest][0],table["dec"][nearest][0],unit="deg")
+    matchedinds = []
+    for i in range(len(table)):
+        if nearestcoords.separation(SkyCoord(table["ra"][i],table["dec"][i],unit="deg")) < 3*u.arcsec:
+            matchedinds.append(i)
+                
     fname = directory+name+'.xml'
-    table[nearest].write(fname, format='votable', overwrite=True)
-    print("Data saved to "+fname)
+    table[matchedinds].write(fname, format='votable', overwrite=True)
+    print(str(len(matchedinds))+" data points saved to "+fname)
     #add to target menu and display
     targets[name] = fname
     target_select.options.append(name)

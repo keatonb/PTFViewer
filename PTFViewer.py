@@ -17,8 +17,10 @@ from astropy.table import Table
 import astropy.units as u
 
 from bokeh.io import curdoc
-from bokeh.layouts import row, column, widgetbox
-from bokeh.models import ColumnDataSource, DataRange1d, Select, Button, DataTable, TableColumn, TextInput, Div, VBox, RadioButtonGroup
+from bokeh.layouts import row, column
+from bokeh.models import ColumnDataSource, DataRange1d, Button, DataTable, TableColumn, TextInput, Div, RadioButtonGroup
+from bokeh.models.widgets import Select
+from bokeh.layouts import widgetbox
 from bokeh.plotting import figure
 
 
@@ -175,9 +177,7 @@ def download_ptf(coords,name=None,directory=None):
     targets[name] = fname
     target_select.options.append(name)
     target_select.value = target_select.options[-1]
-    
-    
-
+    target_select.update()
     
 #Set up interaction for selecting data source
 
@@ -212,9 +212,9 @@ div = Div(text="""Select a new target from the left to
 #Set up area to download data:
 targ_input = TextInput(value="", title="Search Target:",width=300)
 ra_input = TextInput(value="", title="Right Ascension:",width=120)
-ra_box = VBox(ra_input,width=150,height=50)
+ra_box = widgetbox(ra_input,width=150,height=50)
 dec_input = TextInput(value="", title="Declination:",width=120)
-dec_box = VBox(dec_input,width=150,height=50)
+dec_box = widgetbox(dec_input,width=150,height=50)
 ra_format = RadioButtonGroup(labels=["hours","degrees"],active=0,width=220)
 clearbtn = Button(label='clear',width=80)
 clearbtn.on_click(clearfields)
